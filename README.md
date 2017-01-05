@@ -1,0 +1,3 @@
+# BlackJackOnline
+
+Blackjack is a card game where one or more players sit together to contend against dealer. The dealer deals from a dealer’s shoe which holds multiple deck of cards. Each player starts my making a wager and two cards are dealt to all players including dealer, with one of the dealer’s card face up and other face down. The objective is to raise a hand that is closer or equal to “21” other than dealer for player to win the game. Each face card is worth 10 points, the ace card worth either 1 or 11 and non-face cards worth their natural value. Player lose the hand if their score exceeds 21
