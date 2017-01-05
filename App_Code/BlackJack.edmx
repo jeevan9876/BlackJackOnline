@@ -1,0 +1,856 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BlackJackOnlineModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CardInfo">
+          <Key>
+            <PropertyRef Name="CardInfoId" />
+          </Key>
+          <Property Name="CardInfoId" Type="int" Nullable="false" />
+          <Property Name="PokerOrder" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="Image" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Cards">
+          <Key>
+            <PropertyRef Name="CardId" />
+          </Key>
+          <Property Name="CardId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CardInfoId" Type="int" />
+          <Property Name="Deck" Type="int" />
+          <Property Name="IsAvailable" Type="bit" />
+        </EntityType>
+        <EntityType Name="Dealer">
+          <Key>
+            <PropertyRef Name="GameId" />
+            <PropertyRef Name="CardId" />
+          </Key>
+          <Property Name="GameId" Type="int" Nullable="false" />
+          <Property Name="CardId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DealerMoves">
+          <Key>
+            <PropertyRef Name="MoveId" />
+          </Key>
+          <Property Name="MoveId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GameId" Type="int" />
+          <Property Name="PlayType" Type="varchar" MaxLength="20" />
+          <Property Name="CardId" Type="int" />
+          <Property Name="Points" Type="int" />
+        </EntityType>
+        <EntityType Name="GamePlayers">
+          <Key>
+            <PropertyRef Name="GameId" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="GameId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Games">
+          <Key>
+            <PropertyRef Name="GameId" />
+          </Key>
+          <Property Name="GameId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GameState" Type="bit" Nullable="false" />
+          <Property Name="PlayerCount" Type="int" />
+        </EntityType>
+        <EntityType Name="Hand">
+          <Key>
+            <PropertyRef Name="GameId" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="CardId" />
+          </Key>
+          <Property Name="GameId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CardId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Moves">
+          <Key>
+            <PropertyRef Name="MoveId" />
+          </Key>
+          <Property Name="MoveId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GameId" Type="int" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="PlayType" Type="varchar" MaxLength="20" />
+          <Property Name="CardId" Type="int" />
+          <Property Name="Points" Type="int" />
+        </EntityType>
+        <EntityType Name="Records">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Wins" Type="int" />
+          <Property Name="Losses" Type="int" />
+          <Property Name="Draws" Type="int" />
+        </EntityType>
+        <EntityType Name="Turns">
+          <Key>
+            <PropertyRef Name="GameId" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="GameId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="TurnOver" Type="int" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="150" />
+          <Property Name="money" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Wins" Type="int" />
+          <Property Name="Losses" Type="int" />
+          <Property Name="Draws" Type="int" />
+        </EntityType>
+        <Association Name="FK__Cards__CardInfoI__414EAC47">
+          <End Role="CardInfo" Type="Self.CardInfo" Multiplicity="0..1" />
+          <End Role="Cards" Type="Self.Cards" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CardInfo">
+              <PropertyRef Name="CardInfoId" />
+            </Principal>
+            <Dependent Role="Cards">
+              <PropertyRef Name="CardInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Dealer__CardId__5649C92D">
+          <End Role="Cards" Type="Self.Cards" Multiplicity="1" />
+          <End Role="Dealer" Type="Self.Dealer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cards">
+              <PropertyRef Name="CardId" />
+            </Principal>
+            <Dependent Role="Dealer">
+              <PropertyRef Name="CardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Dealer__GameId__573DED66">
+          <End Role="Games" Type="Self.Games" Multiplicity="1" />
+          <End Role="Dealer" Type="Self.Dealer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameId" />
+            </Principal>
+            <Dependent Role="Dealer">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DealerMov__CardI__5A1A5A11">
+          <End Role="Cards" Type="Self.Cards" Multiplicity="0..1" />
+          <End Role="DealerMoves" Type="Self.DealerMoves" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cards">
+              <PropertyRef Name="CardId" />
+            </Principal>
+            <Dependent Role="DealerMoves">
+              <PropertyRef Name="CardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DealerMov__GameI__5B0E7E4A">
+          <End Role="Games" Type="Self.Games" Multiplicity="0..1" />
+          <End Role="DealerMoves" Type="Self.DealerMoves" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameId" />
+            </Principal>
+            <Dependent Role="DealerMoves">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GamePlaye__GameI__4EA8A765">
+          <End Role="Games" Type="Self.Games" Multiplicity="1" />
+          <End Role="GamePlayers" Type="Self.GamePlayers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameId" />
+            </Principal>
+            <Dependent Role="GamePlayers">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__GamePlaye__UserI__19FFD4FC">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="GamePlayers" Type="Self.GamePlayers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="GamePlayers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Hand__CardId__51851410">
+          <End Role="Cards" Type="Self.Cards" Multiplicity="1" />
+          <End Role="Hand" Type="Self.Hand" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cards">
+              <PropertyRef Name="CardId" />
+            </Principal>
+            <Dependent Role="Hand">
+              <PropertyRef Name="CardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Hand__GameId__536D5C82">
+          <End Role="Games" Type="Self.Games" Multiplicity="1" />
+          <End Role="Hand" Type="Self.Hand" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameId" />
+            </Principal>
+            <Dependent Role="Hand">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Hand__UserId__1AF3F935">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Hand" Type="Self.Hand" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Hand">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Moves__CardId__48EFCE0F">
+          <End Role="Cards" Type="Self.Cards" Multiplicity="0..1" />
+          <End Role="Moves" Type="Self.Moves" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cards">
+              <PropertyRef Name="CardId" />
+            </Principal>
+            <Dependent Role="Moves">
+              <PropertyRef Name="CardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Moves__GameId__49E3F248">
+          <End Role="Games" Type="Self.Games" Multiplicity="0..1" />
+          <End Role="Moves" Type="Self.Moves" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameId" />
+            </Principal>
+            <Dependent Role="Moves">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Moves__UserId__190BB0C3">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Moves" Type="Self.Moves" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Moves">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Records__UserId__1BE81D6E">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Records" Type="Self.Records" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Records">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Turns__GameId__61BB7BD9">
+          <End Role="Games" Type="Self.Games" Multiplicity="1" />
+          <End Role="Turns" Type="Self.Turns" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameId" />
+            </Principal>
+            <Dependent Role="Turns">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Turns__UserId__1CDC41A7">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Turns" Type="Self.Turns" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Turns">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BlackJackOnlineModelStoreContainer">
+          <EntitySet Name="CardInfo" EntityType="Self.CardInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cards" EntityType="Self.Cards" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dealer" EntityType="Self.Dealer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DealerMoves" EntityType="Self.DealerMoves" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GamePlayers" EntityType="Self.GamePlayers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Games" EntityType="Self.Games" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hand" EntityType="Self.Hand" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Moves" EntityType="Self.Moves" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Records" EntityType="Self.Records" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Turns" EntityType="Self.Turns" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Cards__CardInfoI__414EAC47" Association="Self.FK__Cards__CardInfoI__414EAC47">
+            <End Role="CardInfo" EntitySet="CardInfo" />
+            <End Role="Cards" EntitySet="Cards" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Dealer__CardId__5649C92D" Association="Self.FK__Dealer__CardId__5649C92D">
+            <End Role="Cards" EntitySet="Cards" />
+            <End Role="Dealer" EntitySet="Dealer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Dealer__GameId__573DED66" Association="Self.FK__Dealer__GameId__573DED66">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Dealer" EntitySet="Dealer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DealerMov__CardI__5A1A5A11" Association="Self.FK__DealerMov__CardI__5A1A5A11">
+            <End Role="Cards" EntitySet="Cards" />
+            <End Role="DealerMoves" EntitySet="DealerMoves" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DealerMov__GameI__5B0E7E4A" Association="Self.FK__DealerMov__GameI__5B0E7E4A">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="DealerMoves" EntitySet="DealerMoves" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GamePlaye__GameI__4EA8A765" Association="Self.FK__GamePlaye__GameI__4EA8A765">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="GamePlayers" EntitySet="GamePlayers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__GamePlaye__UserI__19FFD4FC" Association="Self.FK__GamePlaye__UserI__19FFD4FC">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="GamePlayers" EntitySet="GamePlayers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Hand__CardId__51851410" Association="Self.FK__Hand__CardId__51851410">
+            <End Role="Cards" EntitySet="Cards" />
+            <End Role="Hand" EntitySet="Hand" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Hand__GameId__536D5C82" Association="Self.FK__Hand__GameId__536D5C82">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Hand" EntitySet="Hand" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Hand__UserId__1AF3F935" Association="Self.FK__Hand__UserId__1AF3F935">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Hand" EntitySet="Hand" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Moves__CardId__48EFCE0F" Association="Self.FK__Moves__CardId__48EFCE0F">
+            <End Role="Cards" EntitySet="Cards" />
+            <End Role="Moves" EntitySet="Moves" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Moves__GameId__49E3F248" Association="Self.FK__Moves__GameId__49E3F248">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Moves" EntitySet="Moves" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Moves__UserId__190BB0C3" Association="Self.FK__Moves__UserId__190BB0C3">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Moves" EntitySet="Moves" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Records__UserId__1BE81D6E" Association="Self.FK__Records__UserId__1BE81D6E">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Records" EntitySet="Records" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Turns__GameId__61BB7BD9" Association="Self.FK__Turns__GameId__61BB7BD9">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Turns" EntitySet="Turns" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Turns__UserId__1CDC41A7" Association="Self.FK__Turns__UserId__1CDC41A7">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Turns" EntitySet="Turns" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BlackJackOnlineModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CardInfo">
+          <Key>
+            <PropertyRef Name="CardInfoId" />
+          </Key>
+          <Property Name="CardInfoId" Type="Int32" Nullable="false" />
+          <Property Name="PokerOrder" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Image" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cards" Relationship="Self.FK__Cards__CardInfoI__414EAC47" FromRole="CardInfo" ToRole="Cards" />
+        </EntityType>
+        <EntityType Name="Card">
+          <Key>
+            <PropertyRef Name="CardId" />
+          </Key>
+          <Property Name="CardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CardInfoId" Type="Int32" />
+          <Property Name="Deck" Type="Int32" />
+          <Property Name="IsAvailable" Type="Boolean" />
+          <NavigationProperty Name="CardInfo" Relationship="Self.FK__Cards__CardInfoI__414EAC47" FromRole="Cards" ToRole="CardInfo" />
+          <NavigationProperty Name="DealerMoves" Relationship="Self.FK__DealerMov__CardI__5A1A5A11" FromRole="Cards" ToRole="DealerMoves" />
+          <NavigationProperty Name="Hands" Relationship="Self.FK__Hand__CardId__51851410" FromRole="Cards" ToRole="Hand" />
+          <NavigationProperty Name="Moves" Relationship="Self.FK__Moves__CardId__48EFCE0F" FromRole="Cards" ToRole="Moves" />
+          <NavigationProperty Name="Games" Relationship="Self.Dealer" FromRole="Cards" ToRole="Games" />
+        </EntityType>
+        <EntityType Name="DealerMove">
+          <Key>
+            <PropertyRef Name="MoveId" />
+          </Key>
+          <Property Name="MoveId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GameId" Type="Int32" />
+          <Property Name="PlayType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CardId" Type="Int32" />
+          <Property Name="Points" Type="Int32" />
+          <NavigationProperty Name="Card" Relationship="Self.FK__DealerMov__CardI__5A1A5A11" FromRole="DealerMoves" ToRole="Cards" />
+          <NavigationProperty Name="Game" Relationship="Self.FK__DealerMov__GameI__5B0E7E4A" FromRole="DealerMoves" ToRole="Games" />
+        </EntityType>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="GameId" />
+          </Key>
+          <Property Name="GameId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GameState" Type="Boolean" Nullable="false" />
+          <Property Name="PlayerCount" Type="Int32" />
+          <NavigationProperty Name="DealerMoves" Relationship="Self.FK__DealerMov__GameI__5B0E7E4A" FromRole="Games" ToRole="DealerMoves" />
+          <NavigationProperty Name="Hands" Relationship="Self.FK__Hand__GameId__536D5C82" FromRole="Games" ToRole="Hand" />
+          <NavigationProperty Name="Moves" Relationship="Self.FK__Moves__GameId__49E3F248" FromRole="Games" ToRole="Moves" />
+          <NavigationProperty Name="Turns" Relationship="Self.FK__Turns__GameId__61BB7BD9" FromRole="Games" ToRole="Turns" />
+          <NavigationProperty Name="Cards" Relationship="Self.Dealer" FromRole="Games" ToRole="Cards" />
+          <NavigationProperty Name="Users" Relationship="Self.GamePlayers" FromRole="Games" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Hand">
+          <Key>
+            <PropertyRef Name="GameId" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="CardId" />
+          </Key>
+          <Property Name="GameId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CardId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Card" Relationship="Self.FK__Hand__CardId__51851410" FromRole="Hand" ToRole="Cards" />
+          <NavigationProperty Name="Game" Relationship="Self.FK__Hand__GameId__536D5C82" FromRole="Hand" ToRole="Games" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Hand__UserId__52793849" FromRole="Hand" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Move">
+          <Key>
+            <PropertyRef Name="MoveId" />
+          </Key>
+          <Property Name="MoveId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GameId" Type="Int32" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="PlayType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CardId" Type="Int32" />
+          <Property Name="Points" Type="Int32" />
+          <NavigationProperty Name="Card" Relationship="Self.FK__Moves__CardId__48EFCE0F" FromRole="Moves" ToRole="Cards" />
+          <NavigationProperty Name="Game" Relationship="Self.FK__Moves__GameId__49E3F248" FromRole="Moves" ToRole="Games" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Moves__UserId__4AD81681" FromRole="Moves" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Record">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Wins" Type="Int32" />
+          <Property Name="Losses" Type="Int32" />
+          <Property Name="Draws" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Records__UserId__5DEAEAF5" FromRole="Records" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Turn">
+          <Key>
+            <PropertyRef Name="GameId" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="GameId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="TurnOver" Type="Int32" />
+          <NavigationProperty Name="Game" Relationship="Self.FK__Turns__GameId__61BB7BD9" FromRole="Turns" ToRole="Games" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Turns__UserId__60C757A0" FromRole="Turns" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Hands" Relationship="Self.FK__Hand__UserId__52793849" FromRole="Users" ToRole="Hand" />
+          <NavigationProperty Name="Moves" Relationship="Self.FK__Moves__UserId__4AD81681" FromRole="Users" ToRole="Moves" />
+          <NavigationProperty Name="Record" Relationship="Self.FK__Records__UserId__5DEAEAF5" FromRole="Users" ToRole="Records" />
+          <NavigationProperty Name="Turns" Relationship="Self.FK__Turns__UserId__60C757A0" FromRole="Users" ToRole="Turns" />
+          <NavigationProperty Name="Games" Relationship="Self.GamePlayers" FromRole="Users" ToRole="Games" />
+          <Property Name="Money" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Wins" Type="Int32" />
+          <Property Name="Losses" Type="Int32" />
+          <Property Name="Draws" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Cards__CardInfoI__414EAC47">
+          <End Role="CardInfo" Type="Self.CardInfo" Multiplicity="0..1" />
+          <End Role="Cards" Type="Self.Card" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CardInfo">
+              <PropertyRef Name="CardInfoId" />
+            </Principal>
+            <Dependent Role="Cards">
+              <PropertyRef Name="CardInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DealerMov__CardI__5A1A5A11">
+          <End Role="Cards" Type="Self.Card" Multiplicity="0..1" />
+          <End Role="DealerMoves" Type="Self.DealerMove" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cards">
+              <PropertyRef Name="CardId" />
+            </Principal>
+            <Dependent Role="DealerMoves">
+              <PropertyRef Name="CardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Hand__CardId__51851410">
+          <End Role="Cards" Type="Self.Card" Multiplicity="1" />
+          <End Role="Hand" Type="Self.Hand" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cards">
+              <PropertyRef Name="CardId" />
+            </Principal>
+            <Dependent Role="Hand">
+              <PropertyRef Name="CardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Moves__CardId__48EFCE0F">
+          <End Role="Cards" Type="Self.Card" Multiplicity="0..1" />
+          <End Role="Moves" Type="Self.Move" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cards">
+              <PropertyRef Name="CardId" />
+            </Principal>
+            <Dependent Role="Moves">
+              <PropertyRef Name="CardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DealerMov__GameI__5B0E7E4A">
+          <End Role="Games" Type="Self.Game" Multiplicity="0..1" />
+          <End Role="DealerMoves" Type="Self.DealerMove" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameId" />
+            </Principal>
+            <Dependent Role="DealerMoves">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Hand__GameId__536D5C82">
+          <End Role="Games" Type="Self.Game" Multiplicity="1" />
+          <End Role="Hand" Type="Self.Hand" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameId" />
+            </Principal>
+            <Dependent Role="Hand">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Moves__GameId__49E3F248">
+          <End Role="Games" Type="Self.Game" Multiplicity="0..1" />
+          <End Role="Moves" Type="Self.Move" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameId" />
+            </Principal>
+            <Dependent Role="Moves">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Turns__GameId__61BB7BD9">
+          <End Role="Games" Type="Self.Game" Multiplicity="1" />
+          <End Role="Turns" Type="Self.Turn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameId" />
+            </Principal>
+            <Dependent Role="Turns">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Hand__UserId__52793849">
+          <End Role="Users" Type="BlackJackOnlineModel.Users" Multiplicity="1" />
+          <End Role="Hand" Type="Self.Hand" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Hand">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Moves__UserId__4AD81681">
+          <End Role="Users" Type="BlackJackOnlineModel.Users" Multiplicity="0..1" />
+          <End Role="Moves" Type="Self.Move" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Moves">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Records__UserId__5DEAEAF5">
+          <End Role="Users" Type="BlackJackOnlineModel.Users" Multiplicity="1" />
+          <End Role="Records" Type="Self.Record" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Records">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Turns__UserId__60C757A0">
+          <End Role="Users" Type="BlackJackOnlineModel.Users" Multiplicity="1" />
+          <End Role="Turns" Type="Self.Turn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Turns">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Dealer">
+          <End Role="Cards" Type="Self.Card" Multiplicity="*" />
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+        </Association>
+        <Association Name="GamePlayers">
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+          <End Role="Users" Type="BlackJackOnlineModel.Users" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="BlackJackOnlineEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CardInfoes" EntityType="Self.CardInfo" />
+          <EntitySet Name="Cards" EntityType="Self.Card" />
+          <EntitySet Name="DealerMoves" EntityType="Self.DealerMove" />
+          <EntitySet Name="Games" EntityType="Self.Game" />
+          <EntitySet Name="Hands" EntityType="Self.Hand" />
+          <EntitySet Name="Moves" EntityType="Self.Move" />
+          <EntitySet Name="Records" EntityType="Self.Record" />
+          <EntitySet Name="Turns" EntityType="Self.Turn" />
+          <EntitySet Name="Users" EntityType="BlackJackOnlineModel.Users" />
+          <AssociationSet Name="FK__Cards__CardInfoI__414EAC47" Association="Self.FK__Cards__CardInfoI__414EAC47">
+            <End Role="CardInfo" EntitySet="CardInfoes" />
+            <End Role="Cards" EntitySet="Cards" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DealerMov__CardI__5A1A5A11" Association="Self.FK__DealerMov__CardI__5A1A5A11">
+            <End Role="Cards" EntitySet="Cards" />
+            <End Role="DealerMoves" EntitySet="DealerMoves" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Hand__CardId__51851410" Association="Self.FK__Hand__CardId__51851410">
+            <End Role="Cards" EntitySet="Cards" />
+            <End Role="Hand" EntitySet="Hands" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Moves__CardId__48EFCE0F" Association="Self.FK__Moves__CardId__48EFCE0F">
+            <End Role="Cards" EntitySet="Cards" />
+            <End Role="Moves" EntitySet="Moves" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DealerMov__GameI__5B0E7E4A" Association="Self.FK__DealerMov__GameI__5B0E7E4A">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="DealerMoves" EntitySet="DealerMoves" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Hand__GameId__536D5C82" Association="Self.FK__Hand__GameId__536D5C82">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Hand" EntitySet="Hands" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Moves__GameId__49E3F248" Association="Self.FK__Moves__GameId__49E3F248">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Moves" EntitySet="Moves" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Turns__GameId__61BB7BD9" Association="Self.FK__Turns__GameId__61BB7BD9">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Turns" EntitySet="Turns" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Hand__UserId__52793849" Association="Self.FK__Hand__UserId__52793849">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Hand" EntitySet="Hands" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Moves__UserId__4AD81681" Association="Self.FK__Moves__UserId__4AD81681">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Moves" EntitySet="Moves" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Records__UserId__5DEAEAF5" Association="Self.FK__Records__UserId__5DEAEAF5">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Records" EntitySet="Records" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Turns__UserId__60C757A0" Association="Self.FK__Turns__UserId__60C757A0">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Turns" EntitySet="Turns" />
+          </AssociationSet>
+          <AssociationSet Name="Dealer" Association="Self.Dealer">
+            <End Role="Cards" EntitySet="Cards" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="GamePlayers" Association="Self.GamePlayers">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BlackJackOnlineModelStoreContainer" CdmEntityContainer="BlackJackOnlineEntities">
+          <EntitySetMapping Name="CardInfoes">
+            <EntityTypeMapping TypeName="BlackJackOnlineModel.CardInfo">
+              <MappingFragment StoreEntitySet="CardInfo">
+                <ScalarProperty Name="CardInfoId" ColumnName="CardInfoId" />
+                <ScalarProperty Name="PokerOrder" ColumnName="PokerOrder" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cards">
+            <EntityTypeMapping TypeName="BlackJackOnlineModel.Card">
+              <MappingFragment StoreEntitySet="Cards">
+                <ScalarProperty Name="CardId" ColumnName="CardId" />
+                <ScalarProperty Name="CardInfoId" ColumnName="CardInfoId" />
+                <ScalarProperty Name="Deck" ColumnName="Deck" />
+                <ScalarProperty Name="IsAvailable" ColumnName="IsAvailable" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DealerMoves">
+            <EntityTypeMapping TypeName="BlackJackOnlineModel.DealerMove">
+              <MappingFragment StoreEntitySet="DealerMoves">
+                <ScalarProperty Name="MoveId" ColumnName="MoveId" />
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="PlayType" ColumnName="PlayType" />
+                <ScalarProperty Name="CardId" ColumnName="CardId" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="BlackJackOnlineModel.Game">
+              <MappingFragment StoreEntitySet="Games">
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="GameState" ColumnName="GameState" />
+                <ScalarProperty Name="PlayerCount" ColumnName="PlayerCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hands">
+            <EntityTypeMapping TypeName="BlackJackOnlineModel.Hand">
+              <MappingFragment StoreEntitySet="Hand">
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CardId" ColumnName="CardId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Moves">
+            <EntityTypeMapping TypeName="BlackJackOnlineModel.Move">
+              <MappingFragment StoreEntitySet="Moves">
+                <ScalarProperty Name="MoveId" ColumnName="MoveId" />
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PlayType" ColumnName="PlayType" />
+                <ScalarProperty Name="CardId" ColumnName="CardId" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Records">
+            <EntityTypeMapping TypeName="BlackJackOnlineModel.Record">
+              <MappingFragment StoreEntitySet="Records">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Wins" ColumnName="Wins" />
+                <ScalarProperty Name="Losses" ColumnName="Losses" />
+                <ScalarProperty Name="Draws" ColumnName="Draws" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Turns">
+            <EntityTypeMapping TypeName="BlackJackOnlineModel.Turn">
+              <MappingFragment StoreEntitySet="Turns">
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TurnOver" ColumnName="TurnOver" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="BlackJackOnlineModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Draws" ColumnName="Draws" />
+                <ScalarProperty Name="Losses" ColumnName="Losses" />
+                <ScalarProperty Name="Wins" ColumnName="Wins" />
+                <ScalarProperty Name="Money" ColumnName="money" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Dealer" TypeName="BlackJackOnlineModel.Dealer" StoreEntitySet="Dealer">
+            <EndProperty Name="Cards">
+              <ScalarProperty Name="CardId" ColumnName="CardId" />
+            </EndProperty>
+            <EndProperty Name="Games">
+              <ScalarProperty Name="GameId" ColumnName="GameId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="GamePlayers" TypeName="BlackJackOnlineModel.GamePlayers" StoreEntitySet="GamePlayers">
+            <EndProperty Name="Games">
+              <ScalarProperty Name="GameId" ColumnName="GameId" />
+            </EndProperty>
+            <EndProperty Name="Users">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

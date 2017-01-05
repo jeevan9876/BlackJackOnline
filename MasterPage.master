@@ -1,0 +1,38 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link href="~/Bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Bootstrap/css/bootstrap.min..css" rel="stylesheet" />
+
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body style="height: 280px; width: 776px">
+    <form id="form1" runat="server">
+        <div>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="Welcome.aspx">BlackJack</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="Home.aspx">Home</a></li>
+                        <li><a href="PlayNow.aspx">Play Now</a></li>
+                        <li><a href="MyAccount.aspx">My Account</a></li>                    
+                        <li><a href="Scoreboard.aspx">ScoreBoard</a></li>
+                        <li><a href="Logout.aspx">Logout</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>

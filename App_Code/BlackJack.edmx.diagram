@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="af1365961dcd4b4182001b8ca38368cc" Name="Diagram1">
+        <EntityTypeShape EntityType="BlackJackOnlineModel.CardInfo" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlackJackOnlineModel.Card" Width="1.5" PointX="3" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlackJackOnlineModel.DealerMove" Width="1.5" PointX="7.5" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlackJackOnlineModel.Game" Width="1.5" PointX="5.25" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlackJackOnlineModel.Hand" Width="1.5" PointX="12.75" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlackJackOnlineModel.Move" Width="1.5" PointX="8" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlackJackOnlineModel.Record" Width="1.5" PointX="9.75" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlackJackOnlineModel.Turn" Width="1.5" PointX="9.75" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlackJackOnlineModel.Users" Width="1.5" PointX="7.5" PointY="13.5" IsExpanded="true" />
+        <AssociationConnector Association="BlackJackOnlineModel.FK__Cards__CardInfoI__414EAC47" ManuallyRouted="false" />
+        <AssociationConnector Association="BlackJackOnlineModel.FK__DealerMov__CardI__5A1A5A11" ManuallyRouted="false" />
+        <AssociationConnector Association="BlackJackOnlineModel.FK__Hand__CardId__51851410" ManuallyRouted="false" />
+        <AssociationConnector Association="BlackJackOnlineModel.FK__Moves__CardId__48EFCE0F" ManuallyRouted="false" />
+        <AssociationConnector Association="BlackJackOnlineModel.FK__DealerMov__GameI__5B0E7E4A" ManuallyRouted="false" />
+        <AssociationConnector Association="BlackJackOnlineModel.FK__Hand__GameId__536D5C82" ManuallyRouted="false" />
+        <AssociationConnector Association="BlackJackOnlineModel.FK__Moves__GameId__49E3F248" ManuallyRouted="false" />
+        <AssociationConnector Association="BlackJackOnlineModel.FK__Turns__GameId__61BB7BD9" ManuallyRouted="false" />
+        <AssociationConnector Association="BlackJackOnlineModel.FK__Hand__UserId__52793849" ManuallyRouted="false" />
+        <AssociationConnector Association="BlackJackOnlineModel.FK__Moves__UserId__4AD81681" ManuallyRouted="false" />
+        <AssociationConnector Association="BlackJackOnlineModel.FK__Records__UserId__5DEAEAF5" ManuallyRouted="false" />
+        <AssociationConnector Association="BlackJackOnlineModel.FK__Turns__UserId__60C757A0" ManuallyRouted="false" />
+        <AssociationConnector Association="BlackJackOnlineModel.Dealer" ManuallyRouted="false" />
+        <AssociationConnector Association="BlackJackOnlineModel.GamePlayers" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
